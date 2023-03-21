@@ -3,7 +3,7 @@ from sqlite3 import Error
 from flask import Flask, render_template, request, redirect
 from flask_bcrypt import Bcrypt
 
-DATABASE = 'maoridictionary.db'
+DATABASE = 'C:/Users/brian/Documents/DTS-Database-Assignment/maoridictionary.db'
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
@@ -45,7 +45,7 @@ def render_signup():
 
         hashed_password = bcrypt.generate_password_hash(password)
         con = create_connection(DATABASE)
-        query = "INSERT INTO user(fname, lname, email, password) VALUES (?, ?, ?, ?)"
+        query = "INSERT INTO user(first_name, last_name, email, password) VALUES (?, ?, ?, ?)"
         cur = con.cursor()
 
         try:
