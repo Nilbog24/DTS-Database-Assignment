@@ -8,6 +8,11 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
+@app.route('/')
+def render_homepage():
+    return render_template('home.html')
+
+
 def create_connection(db_file):
     try:
         connection = sqlite3.connect(db_file)
@@ -57,5 +62,4 @@ def render_signup():
     return render_template('signup.html')
 
 
-if __name__ == '__main__':
-    app.run()
+app.run(host='0.0.0.0', debug=True)
