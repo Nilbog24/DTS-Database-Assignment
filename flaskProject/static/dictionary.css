@@ -21,3 +21,24 @@ body {
     clear: both;
     display: table;
 }
+
+.myform {
+    width: 80%;
+    margin: auto;
+    padding-top: 3rem;
+}
+
+.form-group {
+    padding-top: 3rem;
+}
+
+.form-label {
+    width: 30%;
+    float: left;
+    padding: 0.3rem;
+}
+
+.form-element {
+    width: 70%;
+    float: left;
+}
