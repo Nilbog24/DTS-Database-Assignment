@@ -22,6 +22,11 @@ def create_connection(db_file):
     return None
 
 
+@app.route('/dictionary')
+def render_words():
+    return render_template('dictionary.html')
+
+
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     return render_template('login.html')
