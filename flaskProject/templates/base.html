@@ -1,37 +1,50 @@
-<!DOCTYPE html>
-<html>
 
+<!doctype html>
+<html lang="en">
 <head>
-    <meta charset="utf-8">
-    <title>ictionary | home</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.css"/>
-    <link href="{{ url_for('static', filename='dictionary.css') }}" rel="stylesheet">
+	<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://fonts.googleapis.com/css2?family=Comfortaa&family=Suez+One&display=swap" rel="stylesheet">
+	<title>{% block title %}{% endblock %}</title>
+	<meta name="Description" content="Author: D Benseman, Content: A dictionary to convert maori words to english.">
 </head>
 
 <body>
-<nav>
-    <div class="container">
-        <div class="navbar-brand">ictionary.</div>
-        <div class="navbar-links">
-            <a href="/">home</a>
-            <a href="/dictionary">dictionary</a>
-            <a href="/login">login</a>
-        </div>
-    </div>
-</nav>
-<div class="container">
-    <header>
-        <h1>ictionary</h1>
-        <h2>{% block pageheading %}{% endblock %}</h2>
-    </header>
+	<div id="container">
 
-    <main>
-        {% block main %}
-        {% endblock %}
-    </main>
-</div>
+		<header>
+			<h1>{% block heading %}{% endblock %}</h1>
+		</header>
+
+		<nav>
+            <input type="checkbox" name="drop_down_menu" />
+			<span></span>
+			<span></span>
+			<span></span>
+			<ul>
+                <li><a href="\">Home</a></li>
+
+			</ul>
+		</nav>
+
+
+		<!--
+		=====================================================
+		== Content row of the template.                 ==
+		=====================================================
+		-->
+
+		<main>
+            {% block main%}{% endblock %}
+        </main>
+
+
+		<footer>
+			<p>
+				&copy; Enter your name here 2020
+			</p>
+		</footer>
+
+	</div>
 </body>
-
 </html>
