@@ -26,7 +26,11 @@
 					<div class="navbar-links">
 						<a href="/">home</a>
 						<a href="/dictionary">dictionary</a>
+						{% if logged_in == None %}
 						<a href="/login">login</a>
+						{% else %}
+						<a href="/login">login</a>
+						{%endif%}
 					</div>
 			</div>
 		</nav>
