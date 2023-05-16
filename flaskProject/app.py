@@ -8,9 +8,7 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-@app.route('/')
-def render_homepage():
-    return render_template('home.html', logged_in=logged_in_checker())
+
 
 
 def create_connection(db_file):
@@ -31,9 +29,27 @@ def logged_in_checker():
         return 1
 
 
-@app.route('/dictionary')
-def render_words():
-    return render_template('dictionary.html', logged_in=logged_in_checker())
+def get_all_category():
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    query = "SELECT * FROM categories"
+    cur.execute(query, )
+    return cur.fetchall()
+
+@app.route('/')
+def render_homepage():
+    return render_template('home.html', logged_in=logged_in_checker(), categories=get_all_category())
+
+@app.route('/category/<cat_id>')
+def render_words(cat_id):
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    query = "SELECT * FROM vocab_list WHERE category = ?"
+    cur.execute(query, (cat_id, ))
+    words_list = cur.fetchall()
+
+
+    return render_template('dictionary.html', logged_in=logged_in_checker(), categories=get_all_category(), words=words_list)
 
 
 @app.route('/login', methods=['POST', 'GET'])
@@ -71,7 +87,7 @@ def render_login():
         print(session)
 
         return redirect('/')
-    return render_template('login.html', logged_in=logged_in_checker())
+    return render_template('login.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
 @app.route('/signup', methods=['POST', 'GET'])
@@ -107,7 +123,7 @@ def render_signup():
 
         return redirect("\login")
 
-    return render_template('signup.html', logged_in=logged_in_checker())
+    return render_template('signup.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
 app.run(host='0.0.0.0', debug=True)

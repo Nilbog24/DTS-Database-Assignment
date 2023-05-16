@@ -3,5 +3,14 @@
 {% block pageheading %}Dictionary{% endblock %}
 
 {% block main %}
+{% for word in words %}
+<div class="word-block">
+    <p>{{ word[1] }}</p>
+    <p>{{ word[2] }}</p>
+    <p>{{ word[3] }}</p>
+    <p>{{ word[4] }}</p>
+    <p>{{ word[5] }}</p>
+</div>
+{% endfor %}
 
 {% endblock %}
