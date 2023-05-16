@@ -8,9 +8,6 @@ app = Flask(__name__)
 bcrypt = Bcrypt(app)
 
 
-
-
-
 def create_connection(db_file):
     try:
         connection = sqlite3.connect(db_file)
@@ -36,20 +33,22 @@ def get_all_category():
     cur.execute(query, )
     return cur.fetchall()
 
+
 @app.route('/')
 def render_homepage():
     return render_template('home.html', logged_in=logged_in_checker(), categories=get_all_category())
+
 
 @app.route('/category/<cat_id>')
 def render_words(cat_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
     query = "SELECT * FROM vocab_list WHERE category = ?"
-    cur.execute(query, (cat_id, ))
+    cur.execute(query, (cat_id,))
     words_list = cur.fetchall()
 
-
-    return render_template('dictionary.html', logged_in=logged_in_checker(), categories=get_all_category(), words=words_list)
+    return render_template('dictionary.html', logged_in=logged_in_checker(), categories=get_all_category(),
+                           words=words_list)
 
 
 @app.route('/login', methods=['POST', 'GET'])
