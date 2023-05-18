@@ -6,6 +6,7 @@ from flask_bcrypt import Bcrypt
 DATABASE = 'C:/Users/brian/Documents/DTS-Database-Assignment/maoridictionary.db'
 app = Flask(__name__)
 bcrypt = Bcrypt(app)
+app.secret_key = "2u9repokheij"
 
 
 def create_connection(db_file):
@@ -54,7 +55,7 @@ def render_words(cat_id):
 @app.route('/login', methods=['POST', 'GET'])
 def render_login():
     if request.method == 'POST':
-        email = request.form['email'].strip().lower()
+        email = request.form['email'].strip()
         password = request.form['password'].strip()
         query = "SELECT id, first_name, password, user_type FROM user WHERE email = ?"
         con = create_connection(DATABASE)
@@ -64,7 +65,7 @@ def render_login():
         con.close()
         print(user_data)
 
-        if user_data is None:
+        if not bool(user_data):
             return redirect('/login')
 
         try:
@@ -125,13 +126,16 @@ def render_signup():
     return render_template('signup.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
-@app.route('/worddisplay')
-def render_worddisplay(word):
+@app.route('/worddisplay/<word_id>')
+def render_worddisplay(word_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
-    query = "SELECT * FROM vocab_list WHERE maori_word = ?"
-    cur.execute(query, (word,))
+    # query = "SELECT * FROM vocab_list WHERE id = ?"
+    query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON vocab_list.author=user.id WHERE vocab_list.id = ?"
+    cur.execute(query, (word_id,))
     words_list = cur.fetchall()
-    return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category())
+    return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category(),
+                           word=words_list)
+
 
 app.run(host='0.0.0.0', debug=True)

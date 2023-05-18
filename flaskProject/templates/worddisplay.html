@@ -3,5 +3,32 @@
 {% block pageheading %}Dictionary{% endblock %}
 
 {% block main %}
+<table>
+        <thead>
+            <tr>
+                <td>Maori Word</td>
+                <td>Translation</td>
+                <td>Category</td>
+                <td>Definition</td>
+                <td>Level</td>
+                <td>Image</td>
+                <td>Author</td>
+                <td>Last Edit Time</td>
+            </tr>
 
+        </thead>
+        <tbody>
+        {% for credential in word %}
+            <tr>
+                <td>{{ credential[1] }}</td>
+                <td>{{ credential[2] }}</td>
+                <td>{{ credential[3] }}</td>
+                <td>{{ credential[4] }}</td>
+                <td>{{ credential[5] }}</td>
+                <td><img src="/static/images/{{ credential[6] }}"></td>
+                <td>{{ credential[7] }}</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
 {% endblock %}
