@@ -56,7 +56,7 @@ def render_login():
     if request.method == 'POST':
         email = request.form['email'].strip().lower()
         password = request.form['password'].strip()
-        query = "SELECT id, first_name, password, user_type FROM users WHERE email = ?"
+        query = "SELECT id, first_name, password, user_type FROM user WHERE email = ?"
         con = create_connection(DATABASE)
         cur = con.cursor()
         cur.execute(query, (email,))
@@ -124,5 +124,14 @@ def render_signup():
 
     return render_template('signup.html', logged_in=logged_in_checker(), categories=get_all_category())
 
+
+@app.route('/worddisplay')
+def render_worddisplay(word):
+    con = create_connection(DATABASE)
+    cur = con.cursor()
+    query = "SELECT * FROM vocab_list WHERE maori_word = ?"
+    cur.execute(query, (word,))
+    words_list = cur.fetchall()
+    return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 app.run(host='0.0.0.0', debug=True)
