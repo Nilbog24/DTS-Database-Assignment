@@ -2,6 +2,7 @@ import sqlite3
 from sqlite3 import Error
 from flask import Flask, render_template, request, redirect, session
 from flask_bcrypt import Bcrypt
+from datetime import datetime
 
 DATABASE = 'C:/Users/brian/Documents/DTS-Database-Assignment/maoridictionary.db'
 app = Flask(__name__)
@@ -135,6 +136,29 @@ def render_worddisplay(word_id):
     words_list = cur.fetchall()
     return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category(),
                            word=words_list)
+
+
+@app.route('/addword', methods=['POST', 'GET'])
+def render_addword():
+    if request.method == 'POST':
+
+        maori_word = request.form.get('maori_text')
+        english_translation = request.form.get('english_text')
+        definition = request.form.get('definition_text')
+        category = request.form.get('category_text')
+        level = request.form.get('level_text')
+
+        author = session.get('user_id')
+        time = datetime.now()
+
+
+
+        con = create_connection(DATABASE)
+        cur = con.cursor()
+        query = "INSERT INTO vocab_list (maori_word, english_translation, definition, last_edit_time, author, level, category) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        cur.execute(query, (maori_word, english_translation, definition, time, author, level, category))
+        con.commit()
+    return render_template('add.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
 app.run(host='0.0.0.0', debug=True)
