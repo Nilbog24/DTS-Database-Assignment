@@ -131,7 +131,10 @@ def render_signup():
 def render_worddisplay(word_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
-    query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name, vocab_list.last_edit_time FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON vocab_list.author=user.id WHERE vocab_list.id = ?"
+    query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, " \
+            "vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name, vocab_list.last_edit_time " \
+            "FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON " \
+            "vocab_list.author=user.id WHERE vocab_list.id = ?"
     cur.execute(query, (word_id,))
     words_list = cur.fetchall()
     return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category(),
@@ -141,7 +144,6 @@ def render_worddisplay(word_id):
 @app.route('/addword', methods=['POST', 'GET'])
 def render_addword():
     if request.method == 'POST':
-
         maori_word = request.form.get('maori_text')
         english_translation = request.form.get('english_text')
         definition = request.form.get('definition_text')
@@ -151,14 +153,18 @@ def render_addword():
         author = session.get('user_id')
         time = datetime.now()
 
-
-
         con = create_connection(DATABASE)
         cur = con.cursor()
-        query = "INSERT INTO vocab_list (maori_word, english_translation, definition, last_edit_time, author, level, category) VALUES (?, ?, ?, ?, ?, ?, ?)"
+        query = "INSERT INTO vocab_list (maori_word, english_translation, definition, last_edit_time, author, level, " \
+                "category) VALUES (?, ?, ?, ?, ?, ?, ?)"
         cur.execute(query, (maori_word, english_translation, definition, time, author, level, category))
         con.commit()
     return render_template('add.html', logged_in=logged_in_checker(), categories=get_all_category())
+
+
+@app.route('/removeword', methods=['POST', 'GET'])
+def render_removeword():
+    return render_template('remove.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
 app.run(host='0.0.0.0', debug=True)
