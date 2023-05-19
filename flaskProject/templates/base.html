@@ -24,15 +24,15 @@
 			<div class="container">
 				<div class="navbar-brand">Dictionary.</div>
 					<div class="navbar-links">
-						<a href="/">home</a>
+						<a href="/">Home</a><br>
                         {% for category in categories %}
                         <a href="/category/{{ category[0] }}">{{ category[1] }}</a><br>
                         {% endfor %}
 
 						{% if logged_in == None %}
-						<a href="/login">login</a>
+						<a href="/login">Login</a>
 						{% else %}
-						<a href="/login">login</a>
+						<a href="/login">Switch Accounts</a>
 						{%endif%}
 					</div>
 			</div>

@@ -130,8 +130,7 @@ def render_signup():
 def render_worddisplay(word_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
-    # query = "SELECT * FROM vocab_list WHERE id = ?"
-    query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON vocab_list.author=user.id WHERE vocab_list.id = ?"
+    query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name, vocab_list.last_edit_time FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON vocab_list.author=user.id WHERE vocab_list.id = ?"
     cur.execute(query, (word_id,))
     words_list = cur.fetchall()
     return render_template('worddisplay.html', logged_in=logged_in_checker(), categories=get_all_category(),
