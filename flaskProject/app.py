@@ -190,6 +190,10 @@ def removeword():
         cur.execute(query,(removal_id,))
         con.commit()
         con.close()
+
+    elif request.method == 'GET':
+        return redirect("/")
+
     return redirect("/")
 
 
