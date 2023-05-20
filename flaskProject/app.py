@@ -168,7 +168,12 @@ def removeword():
         print(request.form)
         removal_id = request.form.get('removal_id')
 
-        query = "DELETE FROM words WHERE id = ?"
+        con = create_connection(DATABASE)
+        cur = con.cursor()
+        query = "DELETE FROM vocab_list WHERE id = ?"
+        cur.execute(query,(removal_id,))
+        con.commit()
+        con.close()
     return redirect("/")
 
 
