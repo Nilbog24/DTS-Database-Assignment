@@ -151,6 +151,10 @@ def render_worddisplay(word_id):
 
 @app.route('/addword', methods=['POST', 'GET'])
 def render_addword():
+
+    if logged_in_checker() != 1:
+        redirect('/')
+
     if request.method == 'POST':
         maori_word = request.form.get('maori_text')
         english_translation = request.form.get('english_text')
@@ -172,6 +176,10 @@ def render_addword():
 
 @app.route('/removeword', methods=['POST', 'GET'])
 def removeword():
+
+    if logged_in_checker() != 1:
+        redirect('/')
+
     if request.method == 'POST':
         print(request.form)
         removal_id = request.form.get('removal_id')
