@@ -127,6 +127,14 @@ def render_signup():
     return render_template('signup.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
+@app.route("/logout")
+def logout():
+    print(list(session.keys()))
+    [session.pop(key) for key in list(session.keys())]
+    print(list(session.keys()))
+    return redirect("/")
+
+
 @app.route('/worddisplay/<word_id>')
 def render_worddisplay(word_id):
     con = create_connection(DATABASE)
