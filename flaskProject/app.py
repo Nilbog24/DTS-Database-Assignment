@@ -163,8 +163,13 @@ def render_addword():
 
 
 @app.route('/removeword', methods=['POST', 'GET'])
-def render_removeword():
-    return render_template('remove.html', logged_in=logged_in_checker(), categories=get_all_category())
+def removeword():
+    if request.method == 'POST':
+        print(request.form)
+        removal_id = request.form.get('removal_id')
+
+        query = "DELETE FROM words WHERE id = ?"
+    return redirect("/")
 
 
 app.run(host='0.0.0.0', debug=True)

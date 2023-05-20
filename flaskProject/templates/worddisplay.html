@@ -4,40 +4,44 @@
 
 {% block main %}
 <table>
-        <thead>
-            <tr>
-                <td>Maori Word</td>
-                <td>Translation</td>
-                <td>Category</td>
-                <td>Definition</td>
-                <td>Level</td>
-                <td>Image</td>
-                <td>Author</td>
-                <td>Last Edit Time</td>
-            </tr>
+    <thead>
+        <tr>
+            <td>Maori Word</td>
+            <td>Translation</td>
+            <td>Category</td>
+            <td>Definition</td>
+            <td>Level</td>
+            <td>Image</td>
+            <td>Author</td>
+            <td>Last Edit Time</td>
+        </tr>
 
-        </thead>
-        <tbody>
-        {% for credential in word %}
-            <tr>
-                <td>{{ credential[1] }}</td>
-                <td>{{ credential[2] }}</td>
-                <td>{{ credential[3] }}</td>
-                <td>{{ credential[4] }}</td>
-                <td>{{ credential[5] }}</td>
-                <td>
-                    {% if credential[6] %}
-                        <img src="/static/images/{{ credential[6] }}">
-                    {% else %}
-                        <img src="/static/images/noimage.png">
-                    {% endif %}
-                </td>
+    </thead>
+    <tbody>
+    {% for credential in word %}
+        <tr>
+            <td>{{ credential[1] }}</td>
+            <td>{{ credential[2] }}</td>
+            <td>{{ credential[3] }}</td>
+            <td>{{ credential[4] }}</td>
+            <td>{{ credential[5] }}</td>
+            <td>
+                {% if credential[6] %}
+                    <img src="/static/images/{{ credential[6] }}">
+                {% else %}
+                    <img src="/static/images/noimage.png">
+                {% endif %}
+            </td>
 
 
-                <td>{{ credential[7] }}</td>
-                <td>{{ credential[8] }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+            <td>{{ credential[7] }}</td>
+            <td>{{ credential[8] }}</td>
+        </tr>
+        <form method="post" action="/removeword" onsubmit="return confirm('Are you sure you want to delete this word?');">
+            <input type="hidden" value="{{ credential[0] }}" name="removal_id" id="removal_id">
+            <input type="submit" value="Do you want to delete this word?">
+        </form>
+    {% endfor %}
+    </tbody>
+</table>
 {% endblock %}
