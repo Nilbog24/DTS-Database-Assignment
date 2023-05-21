@@ -136,7 +136,8 @@ def render_signup():
         query = "INSERT INTO user(first_name, last_name, email, password, user_type) VALUES (?, ?, ?, ?, ?)"
         cur = con.cursor()
 
-        # Then this tries to
+        # Then this tries to execute the query in order to put the user data into the database.
+        # If the email is already in the database then it will reload the page with an appropriate error message.
         try:
             cur.execute(query, (first_name, last_name, email, hashed_password, user_type))
         except sqlite3.IntegrityError:
@@ -146,11 +147,12 @@ def render_signup():
         con.commit()
         con.close()
 
+        # returns the user to the login page.
         return redirect("\login")
-
     return render_template('signup.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
+# Logout function.
 @app.route("/logout")
 def logout():
     print(list(session.keys()))
@@ -159,10 +161,12 @@ def logout():
     return redirect("/")
 
 
+# Function for displaying a singular word.
 @app.route('/worddisplay/<word_id>')
 def render_worddisplay(word_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
+    # Uses inner join in order to pull from multiple tables and uses the foreign keys to pull specific items in the list.
     query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, " \
             "vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name, vocab_list.last_edit_time " \
             "FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON " \
@@ -173,22 +177,27 @@ def render_worddisplay(word_id):
                            word=words_list)
 
 
+# Function for adding a word to the vocab list database.
 @app.route('/addword', methods=['POST', 'GET'])
 def render_addword():
 
+    # Redirects the user to the home page if they are not a teacher.
     if logged_in_checker() != 1:
         redirect('/')
 
     if request.method == 'POST':
+        # Forms to get the necessary information about the word being added.
         maori_word = request.form.get('maori_text')
         english_translation = request.form.get('english_text')
         definition = request.form.get('definition_text')
         category = request.form.get('category_text')
         level = request.form.get('level_text')
 
+        # Records who added the word and when.
         author = session.get('user_id')
         time = datetime.now()
 
+        # Actually inserts the word into the database using the data given earlier.
         con = create_connection(DATABASE)
         cur = con.cursor()
         query = "INSERT INTO vocab_list (maori_word, english_translation, definition, last_edit_time, author, level, " \
@@ -198,16 +207,20 @@ def render_addword():
     return render_template('add.html', logged_in=logged_in_checker(), categories=get_all_category())
 
 
+# Function to remove a word.
 @app.route('/removeword', methods=['POST', 'GET'])
 def removeword():
 
+    # Redirects the user to the home page if they are not a teacher.
     if logged_in_checker() != 1:
         redirect('/')
 
     if request.method == 'POST':
+        # Form asking if the user want's to remove the word.
         print(request.form)
         removal_id = request.form.get('removal_id')
 
+        # Deletes word with the appropriate id.
         con = create_connection(DATABASE)
         cur = con.cursor()
         query = "DELETE FROM vocab_list WHERE id = ?"
@@ -215,6 +228,7 @@ def removeword():
         con.commit()
         con.close()
 
+    # If the /removeword was added to the url directly, redirects the user to the homepage.
     elif request.method == 'GET':
         return redirect("/")
 
