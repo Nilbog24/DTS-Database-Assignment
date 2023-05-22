@@ -166,7 +166,8 @@ def logout():
 def render_worddisplay(word_id):
     con = create_connection(DATABASE)
     cur = con.cursor()
-    # Uses inner join in order to pull from multiple tables and uses the foreign keys to pull specific items in the list.
+    # Uses inner join in order to pull from multiple tables and uses the foreign keys to pull specific items in the
+    # list.
     query = "SELECT vocab_list.id, vocab_list.maori_word, vocab_list.english_translation, categories.category, " \
             "vocab_list.definition, vocab_list.level, vocab_list.image, user.first_name, vocab_list.last_edit_time " \
             "FROM vocab_list INNER JOIN categories ON vocab_list.category=categories.id INNER JOIN user ON " \
